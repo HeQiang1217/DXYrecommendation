@@ -1,12 +1,24 @@
-from DXYdata.models import ProvinceData,CityData,DataAfterPca
+from DXYdata.models import ProvinceData, CityData, DataAfterPca
 from django.shortcuts import render
-from django.core.paginator import Paginator,  EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pandas as pd
 import pyecharts
-from pyecharts.charts import Geo,Map,Timeline,Line,Page,Grid
+from pyecharts.charts import Geo, Map, Timeline, Line, Page, Grid
 from pyecharts import options as opts
 from pyecharts.globals import GeoType
 from pyecharts.components import Table
+from sklearn.model_selection import train_test_split
+from sklearn import tree
+import numpy as np
+from sklearn import neighbors, datasets
+import pandas as pd
+from sklearn.datasets.samples_generator import make_classification
+from sklearn.decomposition import PCA
+from matplotlib.colors import ListedColormap
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
 def homePage(request):
 	return render(request, "homePage.html")
 
@@ -176,3 +188,68 @@ def dxyDyMap(request):
 		'dyMap':tl.render_embed(),
 		'table' :table.render_embed()
 	})
+
+def classification(request):
+    cityList = CityData.objects.all()
+    df = pd.DataFrame(list(cityList.values()))
+    df = getLevel(df)
+    # data_after_pca = DataAfterPca.objects.all()
+    # data_after_pca = data_after_pca.values()
+    # print("**************************************************")
+    # print(data_after_pca)
+    row_data=df.copy()
+    row_data.drop(['updateTime', 'cityName'], axis=1, inplace=True)
+
+    pca = PCA(n_components=2)
+    data_after_pca = pd.DataFrame(pca.fit_transform(row_data))
+    data_after_pca.columns = ['pca_1', 'pca_2']
+    # print("**************************************************")
+    # print(data_after_pca)
+    # 留出法划分训练测试集
+    labels = df['level']
+    X_train, X_test, y_train, y_test = train_test_split(data_after_pca, labels, test_size=0.25, random_state=0,stratify=labels)
+
+    # 决策树
+    clf = tree.DecisionTreeClassifier()
+    clf = clf.fit(X_train, y_train)
+    predict = clf.predict(X_test)
+
+
+    color1=ListedColormap(['#FFFF99', '#FFCCCC', '#66CCCC'])
+    color2=ListedColormap(['#BFEFFF', '#DDA0DD', '#C1FFC1'])
+
+    plt.figure(figsize=(4,4))
+    # plt.axis([-500, 900, -50, 450])
+    plt.title('DXYData', fontsize=14)
+    plt.scatter(X_test["pca_1"],X_test["pca_2"],c=y_test,cmap=color1)
+
+
+    buffer = BytesIO()
+    plt.savefig(buffer)
+    plt.close()
+    plot_data = buffer.getvalue()
+    imb1 = base64.b64encode(plot_data)  # 对plot_data进行编码
+    ims1 = imb1.decode()
+    imd1 = "data:image/png;base64," + ims1
+
+    plt.figure(figsize=(4, 4))
+
+    plt.title('classification', fontsize=14)
+    plt.scatter(X_test["pca_1"], X_test["pca_2"], c=predict, cmap=color2)
+
+    buffer = BytesIO()
+    plt.savefig(buffer)
+    plt.close()
+    plot_data = buffer.getvalue()
+    imb = base64.b64encode(plot_data)  # 对plot_data进行编码
+    ims = imb.decode()
+    imd = "data:image/png;base64," + ims
+    context = {
+        'img': imd1,
+        'img1': imd,
+    }
+
+    return render(request, 'classification.html', context)
+
+
+

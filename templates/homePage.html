@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <title>社交际花大作业-主页</title>
+</head>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<style type="text/css">
+    @font-face {
+        font-family: 'happyFont';
+        src: url('static/images/happyFont.ttf'); }
+</style>
+<body>
+  <h1 style="margin:10%;text-align:center;font-family:'happyFont';font-size: 50px">社交际花大作业</h1>
+  <div id="app" style="margin:2% 0% 0% 0%;width:100%;height:100%;text-align:center;">
+<!--      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">-->
+<!--  <el-menu-item index="1">xx数值分析</el-menu-item>-->
+<!--      <el-menu-item index="2">xx数值分析</el-menu-item>&ndash;&gt;-->
+<!--      <el-menu-item index="3">xx数值分析</el-menu-item>&ndash;&gt;-->
+<!--      </el-menu>-->
+    <el-dropdown style="margin:0% 5% 0% 0%">
+      <el-button  type="primary" style="font-size: 25px;">丁香园数据
+        <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown" >
+        <el-dropdown-item @click.native="toDxyNumAna()" style="font-size: 20px;" >查看数值分析</el-dropdown-item>
+        <el-dropdown-item @click.native="toDxyDyMap" style="font-size: 20px;">查看动态地图</el-dropdown-item>
+            <el-dropdown-item style="font-size: 20px;">查看分类结果</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+      <el-dropdown style="margin:0% 0% 0% 5%">
+      <el-button  type="primary" style="font-size: 25px;">社交媒体评论
+        <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown" >
+        <el-dropdown-item @click.native="" style="font-size: 20px;" > 查看词频统计 </el-dropdown-item>
+        <el-dropdown-item style="font-size: 20px;"> 查看聚类结果 </el-dropdown-item>
+            <el-dropdown-item style="font-size: 20px;"> 查看情感分析 </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+  </div>
+</body>
+
+
+
+
+  <script>
+      new Vue({
+      el: '#app',
+      data: function() {
+        return { }
+      },
+      methods: {
+      toDxyNumAna(){
+      window.location="/DXY/numAna";
+      },
+      toDxyDyMap(){
+      window.location="/DXY/dyMap";
+      }
+      }
+    })
+  </script>
+
+</html>

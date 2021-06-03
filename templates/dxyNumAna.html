@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>社交际花大作业-数值分析</title>
+</head>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<body>
+  <div id="app" style="margin:0% 0% 0% 0%;width:100%;height:100%;text-align:center;">
+      <el-menu :default-active="'{{selectIndex}}'" class="el-menu-demo" mode="horizontal"
+               background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+  <el-menu-item index="1" @click.native="changeIndex(1)">累计确诊人数分析</el-menu-item>
+      <el-menu-item index="2" @click.native="changeIndex(2)">确诊人数日增长分析</el-menu-item>
+      <el-menu-item index="3" @click.native="changeIndex(3)">累计治愈人数分析</el-menu-item>
+      </el-menu>
+  </div>
+  {{pic|safe}}
+
+
+</body>
+
+
+
+
+  <script>
+      new Vue({
+      el: '#app',
+      data() {
+      return {
+
+      };
+    },
+      methods: {
+      changeIndex(index){
+      window.location="/DXY/numAna?index=" + index;
+      }
+      }
+    })
+  </script>
+
+</html>

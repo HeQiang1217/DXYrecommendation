@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <title>社交际花大作业-动态地图</title>
+</head>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<style type="text/css">
+    @font-face {
+        font-family: 'happyFont';
+        src: url('static/images/happyFont.ttf'); }
+</style>
+<body  style="margin:2% 0% 0% 30%;">
+    {{dyMap|safe}}
+</body>
+<body>
+  <div id="app" style="margin:2% 0% 0% 0%;text-align:left;">
+    根据新冠肺炎分区分类防控措施，风险区等级分类如下：</br>
+    1.低风险区：无确诊病例，或连续14天无新增确诊病例。</br>
+    2.中风险区：14天内有新增确诊病例，累计确诊病例不超过50例；或累计确诊病例超过50例，14天内未发生聚集性疫情。</br>
+    3.高风险区：累计确诊病例超过50例，14天内有聚集性疫情。</br>
+    由此给出分级定义：</br>
+    如果当前确诊数>50 且 14天内有增长 且 14天内最大日增长>10（代表14天内有聚集性疫情） 则为3级 </br>
+    否则，如果当前确诊数>50 或 14天内有增长 则为2级 </br>
+    否则，则为1级 </br>
+    分级后各市在各疫情等级中天数之和如下：
+  </div>
+{{table|safe}}
+</body>
+
+
+
+
+  <script>
+      new Vue({
+      el: '#app',
+      data: function() {
+        return { }
+      },
+      methods: {
+
+      }
+    })
+  </script>
+
+</html>
